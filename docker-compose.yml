@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # cargo watchによる自動リロードを行うための設定
+  app:
+    build: .
+    ports:
+      - "8088:8080"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/target
+    environment:
+      - DATABASE_URL=postgres://user:password@db/mydatabase
+      - RUST_BACKTRACE=1
+    depends_on:
+      - db
+    command: cargo watch -x run
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
