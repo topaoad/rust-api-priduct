@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # cargo watchによる自動リロードを行うための設定
@@ -10,7 +10,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/target
     environment:
-      - DATABASE_URL=postgres://user:password@db/mydatabase
+      - DATABASE_URL=postgres://user:password@db:5432/mydatabase
       - RUST_BACKTRACE=1
     depends_on:
       - db
@@ -24,6 +24,8 @@ services:
       - POSTGRES_DB=mydatabase
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
 
 volumes:
   postgres_data:
