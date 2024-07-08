@@ -5,8 +5,10 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         libssl1.1 \
+        libpq-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && cargo install cargo-watch
+    && cargo install cargo-watch \
+    && cargo install diesel_cli --no-default-features --features postgres
 
 # プロジェクトの依存関係をコピーしてビルド
 COPY Cargo.toml Cargo.lock ./
@@ -27,9 +29,11 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         libssl1.1 \
+        libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/cargo/bin/cargo-watch /usr/local/bin/cargo-watch
+COPY --from=builder /usr/local/cargo/bin/diesel /usr/local/bin/diesel
 COPY --from=builder /usr/src/app /usr/src/app
 
 # Rustはコンパイラ言語だが、都度コンパイルするのは面倒なのでcargo-watchを使って自動コンパイルする
