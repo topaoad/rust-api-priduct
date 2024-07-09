@@ -24,3 +24,10 @@ Rust の使い方全般を実装するためのリポジトリです。
 5. モデルの追加:
    `src/models.rs` にテーブルのモデルを追加する。
 
+
+
+#　実装途中段階
+2024/7/9
+- マイグレーションはできたのでデータベースと接続はできているはずだが、
+　 userテーブルとのCRUD操作ができない。
+Requested application data is not configured correctly. View/enable debug logs for more details.%  
