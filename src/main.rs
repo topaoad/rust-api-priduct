@@ -5,20 +5,22 @@ mod db;
 mod models;
 mod schema;
 mod repositories;
-// mod users;
 
-use crate::controllers::user_controller::{
-    create_user, get_user, update_user, delete_user, list_users,
-};
-use crate::db::DbPool;
-use actix_web::{web, App, HttpServer, Responder};
+use crate::db::establish_connection;
+use env_logger;
+use log::info;
+use actix_web::{web, App, HttpServer};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("debug"));
     println!("Starting server at http://0.0.0.0:8088");
-    HttpServer::new(|| {
+    let pool = establish_connection();
+
+    HttpServer::new(move || {
         App::new()
-            .configure(routes::config)
+            .app_data(web::Data::new(pool.clone()))
+            .configure(crate::routes::config)
     })
     .bind("0.0.0.0:8080")?
     .run()

@@ -1,11 +1,11 @@
 use crate::repositories::user_repository::UserRepository;
-use crate::models::user::User;
+use crate::models::user::{NewUser, User, UpdateUser};
 use crate::db::DbPool;
 
 pub struct UserService {}
 
 impl UserService {
-    pub async fn create_user(pool: &DbPool, user: &User) -> Result<User, diesel::result::Error> {
+    pub async fn create_user(pool: &DbPool, user: &NewUser) -> Result<User, diesel::result::Error> {
         UserRepository::create_user(pool, user).await
     }
 
@@ -13,7 +13,7 @@ impl UserService {
         UserRepository::get_user(pool, user_id).await
     }
 
-    pub async fn update_user(pool: &DbPool, user_id: i32, user: &User) -> Result<User, diesel::result::Error> {
+    pub async fn update_user(pool: &DbPool, user_id: i32, user: &UpdateUser) -> Result<User, diesel::result::Error> {
         UserRepository::update_user(pool, user_id, user).await
     }
 
